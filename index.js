@@ -4,10 +4,8 @@ const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
-// const adminRouter = require('./routes/admin');
+const adminController = require('./controllers/admin');
 app.use(express.json())
-const Visit = require('./model/visit');
-
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
 
@@ -21,18 +19,7 @@ app.get('/', (req, res) => {
    res.send('Hello World!')
 })
 
-app.get("/visit",async (req, res) => {
-    try {
-      // Fetch all visits from the database
-      const allVisits = await Visit.find({});
-  
-      // Send the visits as the response
-      res.json(allVisits);
-    } catch (error) {
-      console.error('Error fetching visits:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+app.get("/visit",adminController.readVisitsData);
 
 const options = {
     definition:{
