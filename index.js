@@ -54,6 +54,34 @@ app.get('/', (req, res) => {
 //app.use('/login', loginRouter);
 app.use('/admin', adminRouter);
 
+/**
+* @swagger
+* tags:
+*   name: Admin
+*   description: Admin operations
+* 
+* /admin/hosts:
+*   get:
+*     summary: Get all hosts
+*     description: Retrieve a list of all hosts
+*     tags: [Admin]
+*     responses:
+*       200:
+*         description: Successful operation
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/User'
+*       401:
+*         description: Unauthorized - Invalid or missing token
+*       403:
+*         description: Forbidden - Insufficient permissions
+*       500:
+*         description: Internal Server Error
+*/
+
 app.get('/admin/hosts',  async (req, res) => {
     try {
       // Fetch all hosts from the database with the category 'host'
@@ -67,61 +95,7 @@ app.get('/admin/hosts',  async (req, res) => {
     }
 });
 
-// POST route for user login
-app.post('/login',async(req, res) =>{
-    try {
-      // Implement your login logic (e.g., validate credentials against the database)
-      const { username, password } = req.body;
-      const user = await User.findOne({username});
-  
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-      }
-  
-      // Compare the provided password with the hashed password using bcrypt
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-          return res.status(401).json({ error: 'Invalid credentials' });
-      }
-  
-      // Generate a JWT token
-      const token = jwt.sign({ userId: user._id, category: user.category }, 'vms2', {
-        expiresIn: '1h',
-      });
-  
-      // Check the user's category and generate the appropriate link
-      let redirectLink;
-      if (user.category === 'host') {
-          redirectLink = `/host/${user._id}`;
-      } else if (user.category === 'admin') {
-          redirectLink = `/admin`;
-      }
-  
-  
-      console.log("JWT:",token);
-      res.json({
-          token,
-          category: user.category,
-          redirectLink,
-          "GET": `/g6/${redirectLink}`,
-          Authorization: token,
-          "Content-Type": "application/json",
-        });
-        
-        
-    } catch (error) {
-      console.error('Error during login:', error);
-        // Log additional information about the error
-      console.error('Error Stack:', error.stack);
-      // Handle different types of errors
-      if (error.name === 'ValidationError') {
-        return res.status(400).json({ error: 'Invalid input data' });
-      } else {
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-    }
-  });
+
 
 const options = {
     definition:{
@@ -155,13 +129,13 @@ const options = {
         },
         servers: [
             {
-                //url:"http://localhost:3000/",
-                url:"https://swaggerg6.azurewebsites.net/"
+                url:"http://localhost:3000/",
+                //url:"https://swaggerg6.azurewebsites.net/"
             }
         ],
     },
     //all the route.js file store inside the route file 
-    apis:["./routes/*.js"],
+    apis:["./routes/*.js","./index.js"],
 };
 
 

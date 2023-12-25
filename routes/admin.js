@@ -87,33 +87,7 @@
 *         example: 1234567890
 */
 
-/**
-* @swagger
-* tags:
-*   name: Admin
-*   description: Admin operations
-* 
-* /admin/hosts:
-*   get:
-*     summary: Get all hosts
-*     description: Retrieve a list of all hosts
-*     tags: [Admin]
-*     responses:
-*       200:
-*         description: Successful operation
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: '#/components/schemas/User'
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-*/
+
 
 const express = require('express');
 const router = express.Router();
