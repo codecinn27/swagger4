@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 const adminRouter = require('./routes/admin');
+const loginRouter = require('./routes/login');
 app.use(express.json())
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
@@ -59,9 +60,9 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
  })
  
- //app.use('/login', loginRouter);
- app.use('/admin', adminRouter);
-
+//app.use('/login', loginRouter);
+app.use('/admin', adminRouter);
+app.use('/login', loginRouter);
 
 // app.use('/admin',adminRouter);
 
