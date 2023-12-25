@@ -87,9 +87,38 @@
 *         example: 1234567890
 */
 
+/**
+* @swagger
+* tags:
+*   name: Admin
+*   description: Admin operations
+* 
+* /admin/hosts:
+*   get:
+*     summary: Get all hosts
+*     description: Retrieve a list of all hosts
+*     tags: [Admin]
+*     responses:
+*       200:
+*         description: Successful operation
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/User'
+*       401:
+*         description: Unauthorized - Invalid or missing token
+*       403:
+*         description: Forbidden - Insufficient permissions
+*       500:
+*         description: Internal Server Error
+*/
+
 const express = require('express');
 const router = express.Router();
 const Visit = require('../model/visit');
+const User = require('../model/user');
 
 router.get('/visits',async(req,res)=>{
     try {
@@ -99,6 +128,20 @@ router.get('/visits',async(req,res)=>{
         console.error('Error fetching visits:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }  
+});
+
+
+router.get('/hosts',  async (req, res) => {
+    try {
+      // Fetch all hosts from the database with the category 'host'
+      const allHosts = await User.find({ category: 'host' });
+  
+      // Send the hosts as the response
+      res.json(allHosts);
+    } catch (error) {
+      console.error('Error fetching hosts:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;
