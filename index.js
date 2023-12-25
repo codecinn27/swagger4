@@ -133,7 +133,7 @@ app.post('/login',async(req, res) =>{
     try {
       // Implement your login logic (e.g., validate credentials against the database)
       const { username, password } = req.body;
-      const user = await User.findOne({username});
+      const user = await User.findOne({username:req.body.username});
   
       if (!user) {
         return res.status(401).json({ error: 'Invalid credentials' });
@@ -160,6 +160,7 @@ app.post('/login',async(req, res) =>{
       }
       console.log("JWT:",token);
       res.json({
+          username,
           token,
           category: user.category,
           redirectLink,
