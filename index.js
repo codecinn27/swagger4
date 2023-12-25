@@ -156,9 +156,7 @@ app.post('/login',async(req,res)=>{
             res.status(401).send('Unauthorized: Wrong password');
           }else{
           await User.updateOne({username:req.body.username},{$set:{login_status:true}})
-          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},"hahaha",{
-            expiresIn: '1h',
-          })
+          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},"hahaha")
           res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.role}/${user._id}`})
         }
         }
