@@ -10,7 +10,7 @@ const User = require('./model/user');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const JWT_SECRET = 'hahaha';
 app.use(express.json())
 
 const options = {
@@ -120,14 +120,26 @@ app.get('/', (req, res) => {
 *                      type: string
 *                      description: Redirect link based on user category
 *      401:
-*          description: Invalid credentials
-*          schema: 
-*              type: object
-*              properties:
-*                  error:  
-*                      type: string
-*                      description: Error message
-*                      example: Invalid credentials
+*          description: Unauthorized - Wrong password
+*          content:
+*            text/plain:
+*              schema:
+*                type: string
+*                example: Unauthorized Wrong password
+*      404:
+*          description: Username not found
+*          content:
+*             text/plain:
+*               schema:
+*                 type: string
+*                 example: Username not found
+*      409:
+*          description: User is already logged in
+*          content:
+*             text/plain:
+*               schema:
+*                 type: string
+*                 example: User is already logged in
 *      500: 
 *          description: Internal Server Error
 *          schema: 
@@ -156,7 +168,7 @@ app.post('/login',async(req,res)=>{
             res.status(401).send('Unauthorized: Wrong password');
           }else{
           await User.updateOne({username:req.body.username},{$set:{login_status:true}})
-          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},"hahaha")
+          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},JWT_SECRET)
           res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.role}/${user._id}`})
         }
         }
