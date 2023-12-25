@@ -90,7 +90,6 @@
 const express = require('express');
 const router = express.Router();
 const Visit = require('../model/visit');
-const admin = require('../controllers/admin');
 
 router.get('/visits',async(req,res)=>{
     try {
