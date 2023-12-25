@@ -58,8 +58,20 @@ const options = {
 const spacs = swaggerJSDoc(options);
 app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
 
+/**
+ * @swagger
+ * /:
+ *  get:
+ *      summary: This api is for testing
+ *      tags:
+ *        - test
+ *      description: This api is used for testing
+ *      responses:
+ *          200:
+ *              description: to test get api
+ */
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('Hello World! WJ')
  })
  
 
@@ -133,7 +145,7 @@ app.post('/login',async(req, res) =>{
     try {
       // Implement your login logic (e.g., validate credentials against the database)
       const { username, password } = req.body;
-      const user = await User.findOne({username:req.body.username});
+      const user = await User.findOne({username});
   
       if (!user) {
         return res.status(401).json({ error: 'Invalid credentials' });
