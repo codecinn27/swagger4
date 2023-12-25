@@ -155,8 +155,8 @@ const options = {
         },
         servers: [
             {
-                url:"http://localhost:3000/",
-                //url:"https://swaggerg6.azurewebsites.net/"
+                //url:"http://localhost:3000/",
+                url:"https://swaggerg6.azurewebsites.net/"
             }
         ],
     },
