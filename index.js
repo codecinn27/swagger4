@@ -158,31 +158,41 @@ app.get('/', (req, res) => {
 */
 
 
-app.post('/login',async(req,res)=>{
-    const {username,password}=req.body
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
     try {
-      const user = await User.findOne({username:req.body.username})
-      if(user==null){
+      const user = await User.findOne({ username: req.body.username });
+      if (user == null) {
         res.status(404).send('Username not found');
-      }else{
-        if(user.login_status==true){
+      } else {
+        if (user.login_status == true) {
           res.status(409).send('User is already logged in');
-        }else{
-          const c = await bcrypt.compare(req.body.password, user.password);      
-          if(!c){
+        } else {
+          const c = await bcrypt.compare(req.body.password, user.password);
+          if (!c) {
             res.status(401).send('Unauthorized: Wrong password');
-          }else{
-          await User.updateOne({username:req.body.username},{$set:{login_status:true}})
-          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},JWT_SECRET)
-          res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.category}/${user._id}`})
+          } else {
+            await User.updateOne({ username: req.body.username }, { $set: { login_status: true } });
+            const access_token = jwt.sign(
+              { userId: user._id, username: user.username, category: user.category },
+              JWT_SECRET
+            );
+            res.json({
+              username: user.username,
+              message: 'Login successful',
+              accesstoken: access_token,
+              _id: user._id,
+              redirectLink: `/${user.category}/${user._id}`,
+            });
+          }
         }
-        }
-        }}
-     catch (error) {
+      }
+    } catch (error) {
       console.log(error.message);
-          res.status(500).json({message: error.message})
+      res.status(500).json({ message: error.message });
     }
-  })
+  });
+  
 
 
 /**
@@ -228,8 +238,6 @@ app.get('/admin/visits',async(req,res)=>{
 *       - Admin
 *     summary: Register a new host
 *     description: Register a new host in the system (admin access required).
-*     security:
-*       - Authorization: []
 *     requestBody:
 *          required: true
 *          content: 
