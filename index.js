@@ -4,6 +4,7 @@ const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
+const adminRouter = require('./routes/admin');
 
 app.use(express.json())
 
@@ -64,7 +65,7 @@ const options = {
 
 const spacs = swaggerJSDoc(options);
 app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
-
+app.use('/admin',adminRouter);
 
 app.listen(port, () => {
    console.log(`Example app listening on port ${port}`)
