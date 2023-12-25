@@ -5,8 +5,24 @@ const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 // const adminRouter = require('./routes/admin');
-const {Visit} = require('./model/user');
 app.use(express.json())
+
+
+// Define the visit schema
+const visitSchema = new mongoose.Schema({
+    purposeOfVisit: {
+        type: String,
+        required: true
+    },
+    visitTime: {
+        type: Date,
+        default: Date.now
+    }
+}, { timestamps: true });  
+
+// Define the Visit model
+const Visit = mongoose.model('Visit', visitSchema);
+
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
 
@@ -20,10 +36,18 @@ app.get('/', (req, res) => {
    res.send('Hello World!')
 })
 
-app.get("/visit",async(req,res)=>{
-    const allVisits = await Visit.find({});
-    res.send(allVisits);
-})
+app.get("/visit",async (req, res) => {
+    try {
+      // Fetch all visits from the database
+      const allVisits = await Visit.find({});
+  
+      // Send the visits as the response
+      res.json(allVisits);
+    } catch (error) {
+      console.error('Error fetching visits:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 const options = {
     definition:{
