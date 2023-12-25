@@ -9,6 +9,7 @@ const adminRouter = require('./routes/admin');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Visitor = require('./model/visitor');
+const User = require('./model/user');
 app.use(express.json())
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
@@ -18,34 +19,6 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open",()=>{
     console.log("Database connected");
 })
-
-const userSchema = new mongoose.Schema({
-    username:{
-        type: String,
-        required: true
-    },
-    password:{
-        type: String,
-        required: true,
-        min: 5
-    },
-    email:{
-        type: String,
-        required: true
-    },
-    phoneNumber:{
-        type: Number,
-        required: true
-    },
-    category:{
-        type: String,
-        enum: ['host','admin']
-    },
-    visitors: [Visitor.schema]  // Embed an array of visitors within each host
-});
-
-
-User = mongoose.model('User', userSchema);
 
 app.get('/', (req, res) => {
    res.send('Hello World!')

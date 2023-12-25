@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
+const Visitor = require('./visitor');
 
 const visitSchema = new mongoose.Schema({
+    visitor_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Visitor'
+    },
     purposeOfVisit: {
         type: String,
         required: true

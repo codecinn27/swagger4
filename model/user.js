@@ -24,7 +24,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ['host','admin']
     },
-    visitors: [Visitor.schema]  // Embed an array of visitors within each host
+    visitors: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Visitor'
+    }  // Embed an array of visitors within each host
 });
 
 // Define a pre-save hook to hash the password before saving to the database

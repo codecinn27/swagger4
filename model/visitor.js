@@ -10,7 +10,10 @@ const visitorSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    visits: [Visit.schema]  // Embed an array of visits within each visitor
+    visits_id: [{
+        type:mongoose.Schema.Types.ObjectId, 
+        ref:'Visit'
+    }]
 });
 
 module.exports = mongoose.model('Visitor', visitorSchema);
