@@ -4,8 +4,6 @@
 *   get:
 *     summary: Get all visits data 
 *     description: Retrieve all visit data 
-*     security:
-*       - Authorization: []
 *     tags: [Admin]
 *     responses:
 *       200:
@@ -94,7 +92,7 @@ const router = express.Router();
 const Visit = require('../model/visit');
 const admin = require('../controllers/admin');
 
-router.get('/visit',async(req,res)=>{
+router.get('/visits',async(req,res)=>{
     try {
         const allVisits = await Visit.find({});
         res.send(allVisits);
