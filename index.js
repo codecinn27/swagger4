@@ -10,16 +10,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 app.use(express.json())
 
-mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
-.then(()=>{
-    console.log('connected to mongodb');
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`)
-     })
-}).catch((error)=>{
-    console.log(error);
-})
-
 const options = {
     definition:{
         openapi: "3.0.3",
@@ -57,6 +47,16 @@ const options = {
 };
 const spacs = swaggerJSDoc(options);
 app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
+
+mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
+.then(()=>{
+    console.log('connected to mongodb');
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+     })
+}).catch((error)=>{
+    console.log(error);
+})
 
 /**
  * @swagger
@@ -170,7 +170,6 @@ app.post('/login',async(req, res) =>{
       } else if (user.category === 'admin') {
           redirectLink = `/admin`;
       }
-      console.log("JWT:",token);
       res.json({
           username,
           token,
