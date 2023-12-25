@@ -105,7 +105,6 @@ router.post('/',async(req, res) =>{
           token,
           category: user.category,
           redirectLink,
-          "GET": `http://localhost:3000${redirectLink}`,
           Authorization: token,
           "Content-Type": "application/json",
         });
