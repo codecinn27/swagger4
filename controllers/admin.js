@@ -1,4 +1,4 @@
-const {Visit} = require('../model/user');
+const {Visit} = require('../model/visit');
 
 module.exports.readVisitsData = async(req,res)=>{
     try {

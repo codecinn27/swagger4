@@ -6,22 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 // const adminRouter = require('./routes/admin');
 app.use(express.json())
-
-
-// Define the visit schema
-const visitSchema = new mongoose.Schema({
-    purposeOfVisit: {
-        type: String,
-        required: true
-    },
-    visitTime: {
-        type: Date,
-        default: Date.now
-    }
-}, { timestamps: true });  
-
-// Define the Visit model
-const Visit = mongoose.model('Visit', visitSchema);
+const Visit = require('./model/visit');
 
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')

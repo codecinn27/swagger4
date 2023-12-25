@@ -70,6 +70,5 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model('User', userSchema);
 const Visitor = mongoose.model('Visitor', visitorSchema);
-const Visit = mongoose.model('Visit', visitSchema);
 
-module.exports = { User, Visitor, Visit };
+module.exports = mongoose.model('Visit', visitSchema);

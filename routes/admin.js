@@ -91,7 +91,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {User, Visit} = require('../model/user');
+const {User, Visit} = require('../model/visit');
 const admin = require('../controllers/admin');
 
 router.get('/visits',admin.readVisitsData);
