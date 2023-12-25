@@ -62,67 +62,6 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
  })
  
-app.get('/admin/visits',async(req,res)=>{
-    try {
-        const allVisits = await Visit.find({});
-        res.send(allVisits);
-    } catch (error) {
-        console.error('Error fetching visits:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }  
-});
-
-app.post('/login',async(req, res) =>{
-    try {
-      // Implement your login logic (e.g., validate credentials against the database)
-      const { username, password } = req.body;
-      const user = await User.findOne({username});
-  
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-      }
-  
-      // Compare the provided password with the hashed password using bcrypt
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-          return res.status(401).json({ error: 'Invalid credentials' });
-      }
-  
-      // Generate a JWT token
-      const token = jwt.sign({ userId: user._id, category: user.category }, 'vms2', {
-        expiresIn: '1h',
-      });
-  
-      // Check the user's category and generate the appropriate link
-      let redirectLink;
-      if (user.category === 'host') {
-          redirectLink = `/host/${user._id}`;
-      } else if (user.category === 'admin') {
-          redirectLink = `/admin`;
-      }
-      console.log("JWT:",token);
-      res.json({
-          token,
-          category: user.category,
-          redirectLink,
-          Authorization: token,
-          "Content-Type": "application/json",
-        });
-        
-        
-    } catch (error) {
-      console.error('Error during login:', error);
-        // Log additional information about the error
-      console.error('Error Stack:', error.stack);
-      // Handle different types of errors
-      if (error.name === 'ValidationError') {
-        return res.status(400).json({ error: 'Invalid input data' });
-      } else {
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-    }
-});
 
 /**
 * @swagger
@@ -189,6 +128,94 @@ app.post('/login',async(req, res) =>{
 * 
 *      
 */
+
+app.post('/login',async(req, res) =>{
+    try {
+      // Implement your login logic (e.g., validate credentials against the database)
+      const { username, password } = req.body;
+      const user = await User.findOne({username});
+  
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+  
+      // Compare the provided password with the hashed password using bcrypt
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (!isPasswordValid) {
+          return res.status(401).json({ error: 'Invalid credentials' });
+      }
+  
+      // Generate a JWT token
+      const token = jwt.sign({ userId: user._id, category: user.category }, 'vms2', {
+        expiresIn: '1h',
+      });
+  
+      // Check the user's category and generate the appropriate link
+      let redirectLink;
+      if (user.category === 'host') {
+          redirectLink = `/host/${user._id}`;
+      } else if (user.category === 'admin') {
+          redirectLink = `/admin`;
+      }
+      console.log("JWT:",token);
+      res.json({
+          token,
+          category: user.category,
+          redirectLink,
+          Authorization: token,
+          "Content-Type": "application/json",
+        });
+        
+        
+    } catch (error) {
+      console.error('Error during login:', error);
+        // Log additional information about the error
+      console.error('Error Stack:', error.stack);
+      // Handle different types of errors
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ error: 'Invalid input data' });
+      } else {
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+    }
+});
+
+/**
+* @swagger
+* /admin/visits:
+*   get:
+*     summary: Get all visits data 
+*     description: Retrieve all visit data 
+*     tags: [Admin]
+*     responses:
+*       200:
+*         description: Successful operation
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/Visit'
+*       401:
+*         description: Unauthorized - Invalid or missing token
+*       403:
+*         description: Forbidden - Insufficient permissions
+*       500:
+*         description: Internal Server Error
+*/
+
+app.get('/admin/visits',async(req,res)=>{
+    try {
+        const allVisits = await Visit.find({});
+        res.send(allVisits);
+    } catch (error) {
+        console.error('Error fetching visits:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }  
+});
+
+
 
 /**
  * @swagger
@@ -344,29 +371,6 @@ app.post('/login',async(req, res) =>{
  *         description: Internal Server Error
  */
 
-/**
-* @swagger
-* /admin/visits:
-*   get:
-*     summary: Get all visits data 
-*     description: Retrieve all visit data 
-*     tags: [Admin]
-*     responses:
-*       200:
-*         description: Successful operation
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: '#/components/schemas/Visit'
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-*/
 
 
 /**
