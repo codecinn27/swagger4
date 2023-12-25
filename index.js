@@ -151,7 +151,7 @@ app.post('/login',async(req,res)=>{
         if(user.login_status==true){
           res.status(409).send('User is already logged in');
         }else{
-          const c = bcrypt.compare(req.body.password, user.password);      
+          const c = await bcrypt.compare(req.body.password, user.password);      
           if(!c){
             res.status(401).send('Unauthorized: Wrong password');
           }else{
