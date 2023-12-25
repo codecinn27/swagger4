@@ -82,76 +82,79 @@ app.get('/', (req, res) => {
 /**
 * @swagger
 * /login:
-*  post:
-*    tags: 
-*        - Login
-*    summary: Login for admin or host
-*    description: Once login authenticate a user and generate a JWT token
-*    requestBody:
-*      required: true
-*      content: 
-*          application/json:
-*              schema:
-*                  type: object
-*                  properties:
-*                      username:
-*                          type: string
-*                      password:
-*                          type: string
-*    responses:
-*      200:   
-*          description: Successful login
-*          schema: 
-*              type: object    
-*              properties:
-*                  username: 
-*                      type: string
-*                      description: username
-*                  message:
-*                      type: string
-*                      description: success message
-*                  token: 
-*                      type: string
-*                      description: JWT token for authentication
-*                  category: 
-*                      type: string
-*                      description: User category (host or admin)
-*                  redirectLink:
-*                      type: string
-*                      description: Redirect link based on user category
-*      401:
-*          description: Unauthorized - Wrong password
-*          content:
-*            text/plain:
-*              schema:
-*                type: string
-*                example: Unauthorized Wrong password
-*      404:
-*          description: Username not found
-*          content:
-*             text/plain:
-*               schema:
+*   post:
+*     tags: 
+*       - Login
+*     summary: Login for admin or host
+*     description: Authenticate a user and generate a JWT token
+*     requestBody:
+*       required: true
+*       content: 
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               username:
 *                 type: string
-*                 example: Username not found
-*      409:
-*          description: User is already logged in
-*          content:
-*             text/plain:
-*               schema:
+*               password:
 *                 type: string
-*                 example: User is already logged in
-*      500: 
-*          description: Internal Server Error
-*          schema: 
-*              type: object
-*              properties: 
-*                  error:
-*                      type: string
-*                      description: Error message
-*                      example: Internal Server Error
-* 
-*      
+*     responses:
+*       200:   
+*         description: Successful login
+*         content:
+*           application/json:
+*             schema: 
+*               type: object    
+*               properties:
+*                 username: 
+*                   type: string
+*                   description: Username
+*                 message:
+*                   type: string
+*                   description: Success message
+*                 token: 
+*                   type: string
+*                   description: JWT token for authentication
+*                 category: 
+*                   type: string
+*                   description: User category (host or admin)
+*                 redirectLink:
+*                   type: string
+*                   description: Redirect link based on user category
+*       401:
+*         description: Unauthorized - Wrong password
+*         content:
+*           text/plain:
+*             schema:
+*               type: string
+*               example: Unauthorized Wrong password
+*       404:
+*         description: Username not found
+*         content:
+*           text/plain:
+*             schema:
+*               type: string
+*               example: Username not found
+*       409:
+*         description: User is already logged in
+*         content:
+*           text/plain:
+*             schema:
+*               type: string
+*               example: User is already logged in
+*       500: 
+*         description: Internal Server Error
+*         content:
+*           application/json:
+*             schema: 
+*               type: object
+*               properties: 
+*                 error:
+*                   type: string
+*                   description: Error message
+*                   example: Internal Server Error
 */
+
 
 app.post('/login',async(req,res)=>{
     const {username,password}=req.body
