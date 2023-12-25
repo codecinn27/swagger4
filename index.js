@@ -161,19 +161,19 @@ app.get('/', (req, res) => {
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await User.findOne({ username: req.body.username });
+      const user = await User.findOne({ username});
       if (user == null) {
         res.status(404).send('Username not found');
       } else {
         if (user.login_status == true) {
           res.status(409).send('User is already logged in');
         } else {
-          const c = await bcrypt.compare(req.body.password, user.password);
+          const c = await bcrypt.compare(password, user.password);
           if (!c) {
             res.status(401).send('Unauthorized: Wrong password');
           } else {
-            await User.updateOne({ username: req.body.username }, { $set: { login_status: true } });
-            const login_user = await User.findOne({username: req.body.username});
+            await User.updateOne({ username}, { $set: { login_status: true } });
+            const login_user = await User.findOne({username});
             const access_token = jwt.sign(
               { userId: login_user._id, username: login_user.username, category: login_user.category },
               JWT_SECRET
