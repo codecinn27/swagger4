@@ -139,6 +139,33 @@ app.get('/', (req, res) => {
 *      
 */
 
+app.post('/login',async(req,res)=>{
+    const {username,password}=req.body
+    try {
+      const user = await User.findOne({username})
+      if(user==null){
+        res.status(404).send('Username not found');
+      }else{
+        if(user.login_status==true){
+          res.status(409).send('User is already logged in');
+        }else{
+          const c = req.body.password === user.password;      
+          if(!c){
+            res.status(401).send('Unauthorized: Wrong password');
+          }else{
+          await User.updateOne({username:req.body.username},{$set:{login_status:true}})
+          const login_user= await User.findOne({username:req.body.username})
+          access_token=jwt.sign({username:login_user.username,user_id:login_user._id,role:login_user.role},"hahaha")
+          res.json({username:login_user.username,message:"login successful",accesstoken: access_token,_id:login_user._id,redirectLink:`/${login_user.role}/${login_user._id}`})
+        }
+        }
+        }}
+     catch (error) {
+      console.log(error.message);
+          res.status(500).json({message: error.message})
+    }
+  })
+
 
 /**
 * @swagger
