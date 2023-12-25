@@ -174,7 +174,7 @@ app.post('/login',async(req,res)=>{
           }else{
           await User.updateOne({username:req.body.username},{$set:{login_status:true}})
           access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},JWT_SECRET)
-          res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.role}/${user._id}`})
+          res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.category}/${user._id}`})
         }
         }
         }}
