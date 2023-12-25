@@ -25,6 +25,7 @@ const options = {
 
         },
         tags:[
+            {name: 'Test', description: "testing"},
             {name:'Login', description:"Default endpoints"},
             {name: 'Admin', description:"Admin operation"},
             {name: 'Host', description:"Host operation"},
@@ -64,7 +65,7 @@ mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mo
  *  get:
  *      summary: This api is for testing
  *      tags:
- *        - test
+ *        - Test
  *      description: This api is used for testing
  *      responses:
  *          200:
