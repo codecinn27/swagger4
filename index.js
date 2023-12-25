@@ -173,16 +173,17 @@ app.post('/login', async (req, res) => {
             res.status(401).send('Unauthorized: Wrong password');
           } else {
             await User.updateOne({ username: req.body.username }, { $set: { login_status: true } });
+            const login_user = await User.findOne({username: req.body.username});
             const access_token = jwt.sign(
-              { userId: user._id, username: user.username, category: user.category },
+              { userId: login_user._id, username: login_user.username, category: login_user.category },
               JWT_SECRET
             );
             res.json({
-              username: user.username,
+              username: login_user.username,
               message: 'Login successful',
               accesstoken: access_token,
               _id: user._id,
-              redirectLink: `/${user.category}/${user._id}`,
+              redirectLink: `/${login_user.category}/${login_user._id}`,
             });
           }
         }
