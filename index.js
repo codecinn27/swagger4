@@ -69,9 +69,9 @@ mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mo
  * /:
  *  get:
  *      summary: This api is for testing
+ *      description: This api is used for testing
  *      tags:
  *        - Test
- *      description: This api is used for testing
  *      responses:
  *          200:
  *              description: to test get api
@@ -85,10 +85,10 @@ app.get('/', (req, res) => {
 * @swagger
 * /login:
 *   post:
-*     tags: 
-*       - Login
 *     summary: Login for admin or host
 *     description: Authenticate a user and generate a JWT token
+*     tags: 
+*       - Login
 *     requestBody:
 *       required: true
 *       content: 
@@ -202,7 +202,8 @@ app.post('/login', async (req, res) => {
 *   get:
 *     summary: Get all visits data 
 *     description: Retrieve all visit data 
-*     tags: [Admin]
+*     tags: 
+*       - Admin
 *     responses:
 *       200:
 *         description: Successful operation
@@ -235,10 +236,10 @@ app.get('/admin/visits',async(req,res)=>{
 * @swagger
 * /admin/registerHost:
 *   post:
-*     tags:
-*       - Admin
 *     summary: Register a new host
 *     description: Register a new host in the system (admin access required).
+*     tags:
+*       - Admin
 *     requestBody:
 *          required: true
 *          content: 
@@ -296,69 +297,71 @@ app.get('/admin/visits',async(req,res)=>{
 
 
 /**
- * @swagger
- * /host/{hostId}:
- *   get:
- *     security:
- *       - Authorization: []
- *     summary: Get welcome message for a host
- *     description: Retrieve a welcome message for a specific host
- *     tags: [Host]
- *     parameters:
- *       - in: path
- *         name: hostId
- *         description: ID of the host
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Welcome message
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *       403:
- *         description: Forbidden - Insufficient permissions
- *       500:
- *         description: Internal Server Error
- * 
- * /host/{hostId}/visitors:
- *   get:
- *     security:
- *       - Authorization: []
- *     summary: Get visitors for a host
- *     description: Retrieve visitors registered under a specific host
- *     tags: [Host]
- *     parameters:
- *       - in: path
- *         name: hostId
- *         description: ID of the host
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Visitor'
- *       401:
- *         description: Unauthorized - Invalid or missing token
- *       403:
- *         description: Forbidden - Insufficient permissions
- *       500:
- *         description: Internal Server Error
- */
+* @swagger
+* /host/{hostId}:
+*   get:
+*     security:
+*       - Authorization: []
+*     summary: Get welcome message for a host
+*     description: Retrieve a welcome message for a specific host
+*     tags: 
+*       - Host
+*     parameters:
+*       - in: path
+*         name: hostId
+*         description: ID of the host
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Successful operation
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 message:
+*                   type: string
+*                   description: Welcome message
+*       401:
+*         description: Unauthorized - Invalid or missing token
+*       403:
+*         description: Forbidden - Insufficient permissions
+*       500:
+*         description: Internal Server Error
+* 
+* /host/{hostId}/visitors:
+*   get:
+*     security:
+*       - Authorization: []
+*     summary: Get visitors for a host
+*     description: Retrieve visitors registered under a specific host
+*     tags: 
+*       - Host
+*     parameters:
+*       - in: path
+*         name: hostId
+*         description: ID of the host
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Successful operation
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/Visitor'
+*       401:
+*         description: Unauthorized - Invalid or missing token
+*       403:
+*         description: Forbidden - Insufficient permissions
+*       500:
+*         description: Internal Server Error
+*/
 
 
 
