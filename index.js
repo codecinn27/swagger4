@@ -4,7 +4,13 @@ const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
+
 const Visit = require('./model/visit');
+const User = require('./model/user');
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 app.use(express.json())
 
 const options = {
@@ -98,6 +104,12 @@ app.get('/', (req, res) => {
 *          schema: 
 *              type: object    
 *              properties:
+*                  username: 
+*                      type: string
+*                      description: username
+*                  message:
+*                      type: string
+*                      description: success message
 *                  token: 
 *                      type: string
 *                      description: JWT token for authentication
@@ -107,15 +119,6 @@ app.get('/', (req, res) => {
 *                  redirectLink:
 *                      type: string
 *                      description: Redirect link based on user category
-*                  GET:
-*                      type: string
-*                      description: URL to be used for redirection
-*                  Authorization:
-*                      type: string
-*                      description: JWT token for authorization
-*                  Content-Type: 
-*                      type: string
-*                      description: Response content type
 *      401:
 *          description: Invalid credentials
 *          schema: 
@@ -134,7 +137,6 @@ app.get('/', (req, res) => {
 *                      type: string
 *                      description: Error message
 *                      example: Internal Server Error
-*          
 * 
 *      
 */
@@ -149,14 +151,15 @@ app.post('/login',async(req,res)=>{
         if(user.login_status==true){
           res.status(409).send('User is already logged in');
         }else{
-          const c = req.body.password === user.password;      
+          const c = await bcrypt.compare(password, user.password);      
           if(!c){
             res.status(401).send('Unauthorized: Wrong password');
           }else{
           await User.updateOne({username:req.body.username},{$set:{login_status:true}})
-          const login_user= await User.findOne({username:req.body.username})
-          access_token=jwt.sign({username:login_user.username,user_id:login_user._id,role:login_user.role},"hahaha")
-          res.json({username:login_user.username,message:"login successful",accesstoken: access_token,_id:login_user._id,redirectLink:`/${login_user.role}/${login_user._id}`})
+          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},"hahaha",{
+            expiresIn: '1h',
+          })
+          res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.role}/${user._id}`})
         }
         }
         }}
@@ -350,34 +353,34 @@ app.get('/admin/visits',async(req,res)=>{
  *         purposeOfVisit:
  *           type: string
  *           description: The purpose of the visit
- *         phoneNumber:
- *           type: number
- *           description: The phone number of the visitor
  *         visitTime:
  *           type: string
  *           format: date-time
  *           description: The time of the visit
  *       example:
  *         purposeOfVisit: Meeting
- *         phoneNumber: 1234567890
  *
  *     Visitor:
  *       type: object
  *       required:
  *         - name
+ *         - phoneNumber
  *       properties:
  *         name:
  *           type: string
  *           description: The name of the visitor
+ *         phoneNumber:
+ *           type: number
+ *           description: Phone number of the visitor
  *         visits:
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/Visit'
  *       example:
  *         name: John Doe
+ *         phoneNumber: 1234567890
  *         visits:
  *           - purposeOfVisit: Meeting
- *             phoneNumber: 1234567890
  *             visitTime: '2023-01-01T12:00:00Z'
  *
  *     User:

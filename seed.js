@@ -21,7 +21,7 @@ async function seedData() {
 
         // Sample visitor data
         const visitor1 = new Visitor({
-            name: 'Visitor1',
+            name: 'Visitor434',
             phoneNumber: 1234567890,
         });
         const visit1 = new Visit({
