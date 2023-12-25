@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 // const adminRouter = require('./routes/admin');
-
+const {Visit} = require('./model/user');
 app.use(express.json())
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
@@ -18,6 +18,11 @@ db.once("open",()=>{
 
 app.get('/', (req, res) => {
    res.send('Hello World!')
+})
+
+app.get("/visit",async(req,res)=>{
+    const allVisits = await Visit.find({});
+    res.send(allVisits);
 })
 
 const options = {
