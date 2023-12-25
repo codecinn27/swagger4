@@ -27,49 +27,6 @@ app.get('/', (req, res) => {
 //app.use('/login', loginRouter);
 app.use('/admin', adminRouter);
 
-/**
-* @swagger
-* tags:
-*   name: Admin
-*   description: Admin operations
-* 
-* /admin/hosts:
-*   get:
-*     summary: Get all hosts
-*     description: Retrieve a list of all hosts
-*     tags: [Admin]
-*     responses:
-*       200:
-*         description: Successful operation
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: '#/components/schemas/User'
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-*/
-
-app.get('/admin/hosts',  async (req, res) => {
-    try {
-      // Fetch all hosts from the database with the category 'host'
-      const allHosts = await User.find({ category: 'host' });
-  
-      // Send the hosts as the response
-      res.json(allHosts);
-    } catch (error) {
-      console.error('Error fetching hosts:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-
-
 const options = {
     definition:{
         openapi: "3.0.3",
@@ -102,13 +59,13 @@ const options = {
         },
         servers: [
             {
-                url:"http://localhost:3000/",
-                //url:"https://swaggerg6.azurewebsites.net/"
+                //url:"http://localhost:3000/",
+                url:"https://swaggerg6.azurewebsites.net/"
             }
         ],
     },
     //all the route.js file store inside the route file 
-    apis:["./routes/*.js","./index.js"],
+    apis:["./routes/*.js"],
 };
 
 
