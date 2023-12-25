@@ -118,7 +118,6 @@
 const express = require('express');
 const router = express.Router();
 const Visit = require('../model/visit');
-const User = require('../model/user');
 
 router.get('/visits',async(req,res)=>{
     try {
@@ -131,17 +130,6 @@ router.get('/visits',async(req,res)=>{
 });
 
 
-router.get('/hosts',  async (req, res) => {
-    try {
-      // Fetch all hosts from the database with the category 'host'
-      const allHosts = await User.find({ category: 'host' });
-  
-      // Send the hosts as the response
-      res.json(allHosts);
-    } catch (error) {
-      console.error('Error fetching hosts:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
+
 
 module.exports = router;

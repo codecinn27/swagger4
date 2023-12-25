@@ -6,10 +6,9 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 //const loginRouter = require('./routes/login');
 const adminRouter = require('./routes/admin');
-const User = require('./model/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const Visitor = require('./model/visitor');
 app.use(express.json())
 
 mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
@@ -20,12 +19,65 @@ db.once("open",()=>{
     console.log("Database connected");
 })
 
+const userSchema = new mongoose.Schema({
+    username:{
+        type: String,
+        required: true
+    },
+    password:{
+        type: String,
+        required: true,
+        min: 5
+    },
+    email:{
+        type: String,
+        required: true
+    },
+    phoneNumber:{
+        type: Number,
+        required: true
+    },
+    category:{
+        type: String,
+        enum: ['host','admin']
+    },
+    visitors: [Visitor.schema]  // Embed an array of visitors within each host
+});
+
+// Define a pre-save hook to hash the password before saving to the database
+userSchema.pre('save', async function (next) {
+    try {
+        if (this.isModified('password') || this.isNew) {
+            const hashedPassword = await bcrypt.hash(this.password, 10);
+            this.password = hashedPassword;
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+User = mongoose.model('User', userSchema);
+
 app.get('/', (req, res) => {
    res.send('Hello World!')
 })
 
 //app.use('/login', loginRouter);
 app.use('/admin', adminRouter);
+
+app.get('/admin/hosts',  async (req, res) => {
+    try {
+      // Fetch all hosts from the database with the category 'host'
+      const allHosts = await User.find({ category: 'host' });
+  
+      // Send the hosts as the response
+      res.json(allHosts);
+    } catch (error) {
+      console.error('Error fetching hosts:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 // POST route for user login
 app.post('/login',async(req, res) =>{
