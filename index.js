@@ -52,6 +52,8 @@ const options = {
     //all the route.js file store inside the route file 
     apis:["./routes/*.js"],
 };
+const spacs = swaggerJSDoc(options);
+app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -60,8 +62,7 @@ app.get('/', (req, res) => {
  //app.use('/login', loginRouter);
  app.use('/admin', adminRouter);
 
-const spacs = swaggerJSDoc(options);
-app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
+
 // app.use('/admin',adminRouter);
 
 
