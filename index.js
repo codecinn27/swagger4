@@ -4,7 +4,7 @@ const port = process.env.PORT || 3000;
 const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
-const loginRouter = require('./routes/login');
+//const loginRouter = require('./routes/login');
 const adminRouter = require('./routes/admin');
 app.use(express.json())
 
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
    res.send('Hello World!')
 })
 
-app.use('/login', loginRouter);
+//app.use('/login', loginRouter);
 app.use('/admin', adminRouter);
 
 const options = {
