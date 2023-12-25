@@ -144,14 +144,14 @@ app.get('/', (req, res) => {
 app.post('/login',async(req,res)=>{
     const {username,password}=req.body
     try {
-      const user = await User.findOne({username})
+      const user = await User.findOne({username:req.body.username})
       if(user==null){
         res.status(404).send('Username not found');
       }else{
         if(user.login_status==true){
           res.status(409).send('User is already logged in');
         }else{
-          const c = await bcrypt.compare(password, user.password);      
+          const c = bcrypt.compare(password, user.password);      
           if(!c){
             res.status(401).send('Unauthorized: Wrong password');
           }else{
