@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 const Visit = require('./model/visit');
-const User = require('./model/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 app.use(express.json())
 
 const options = {
