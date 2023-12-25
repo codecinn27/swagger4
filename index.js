@@ -6,6 +6,12 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerJSDoc = require('swagger-jsdoc');
 
 const Visit = require('./model/visit');
+const User = require('./model/user');
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const JWT_SECRET = 'hahaha';
+
 
 app.use(express.json())
 
@@ -151,6 +157,32 @@ app.get('/', (req, res) => {
 *                   example: Internal Server Error
 */
 
+
+app.post('/login',async(req,res)=>{
+    const {username,password}=req.body
+    try {
+      const user = await User.findOne({username:req.body.username})
+      if(user==null){
+        res.status(404).send('Username not found');
+      }else{
+        if(user.login_status==true){
+          res.status(409).send('User is already logged in');
+        }else{
+          const c = await bcrypt.compare(req.body.password, user.password);      
+          if(!c){
+            res.status(401).send('Unauthorized: Wrong password');
+          }else{
+          await User.updateOne({username:req.body.username},{$set:{login_status:true}})
+          access_token=jwt.sign({userId: user._id,username: user.username,role:user.category},JWT_SECRET)
+          res.json({username:user.username,message:"login successful",accesstoken: access_token,_id:user._id,redirectLink:`/${user.role}/${user._id}`})
+        }
+        }
+        }}
+     catch (error) {
+      console.log(error.message);
+          res.status(500).json({message: error.message})
+    }
+  })
 
 
 /**

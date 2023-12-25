@@ -29,10 +29,11 @@ const userSchema = new mongoose.Schema({
         ref: 'Visitor'
     }],  // Embed an array of visitors within each host
     login_status:{
-        type: Boolean,
-        default: false
+        type: Boolean
     }
-});
+    },
+    {versionKey: false}
+);
 
 // Define a pre-save hook to hash the password before saving to the database
 userSchema.pre('save', async function (next) {
