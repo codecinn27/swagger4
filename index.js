@@ -72,7 +72,7 @@ mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mo
  *              description: to test get api
  */
 app.get('/', (req, res) => {
-    res.send('Hello World! WJ')
+    res.send('Hello World!')
  })
  
 
