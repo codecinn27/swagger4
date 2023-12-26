@@ -34,18 +34,6 @@ const userSchema = new mongoose.Schema({
     {versionKey: false}
 );
 
-// Define a pre-save hook to hash the password before saving to the database
-userSchema.pre('save', async function (next) {
-    try {
-        if (this.isModified('password') || this.isNew) {
-            const hashedPassword = await bcrypt.hash(this.password, 10);
-            this.password = hashedPassword;
-        }
-        next();
-    } catch (error) {
-        next(error);
-    }
-});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

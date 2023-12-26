@@ -308,3 +308,16 @@ module.exports.authenticateToken =(requiredRole) => async (req, res, next) => {
     return res.status(403).json({ error: 'Forbidden: Invalid token' });
   }
 };
+
+// Define a pre-save hook to hash the password before saving to the database
+userSchema.pre('save', async function (next) {
+    try {
+        if (this.isModified('password') || this.isNew) {
+            const hashedPassword = await bcrypt.hash(this.password, 10);
+            this.password = hashedPassword;
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
