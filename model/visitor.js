@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Visit = require('./visit');
 
 const visitorSchema = new mongoose.Schema({
     name: {
@@ -16,4 +15,5 @@ const visitorSchema = new mongoose.Schema({
     }]
 });
 
-module.exports = mongoose.model('Visitor', visitorSchema);
+const Visitor = mongoose.model('Visitor', visitorSchema);
+module.exports = Visitor

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Visitor = require('./visitor');
 
 const visitSchema = new mongoose.Schema({
     visitor_id:{
@@ -18,4 +17,5 @@ const visitSchema = new mongoose.Schema({
     // For example: checkInTime, checkOutTime, etc.
 }, { timestamps: true });  // Add timestamps to track visit creation and update times
 
-module.exports = mongoose.model('Visit', visitSchema);
+const Visit = mongoose.model('Visit', visitSchema);
+module.exports = Visit
