@@ -54,7 +54,7 @@ const options = {
 const spacs = swaggerJSDoc(options);
 app.use("/g6", swaggerUi.serve, swaggerUi.setup(spacs));
 
-mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://codecinnpro:9qLtJIAG9k8G1Pe8@cluster0.egrjwh1.mongodb.net/vms_2?')
 .then(()=>{
     console.log('connected to mongodb');
     app.listen(port, () => {
@@ -232,139 +232,6 @@ app.get('/admin/visits',async(req,res)=>{
 });
 
 
-/**
-* @swagger
-* /admin/registerHost:
-*   post:
-*     summary: Register a new host
-*     description: Register a new host in the system (admin access required).
-*     tags:
-*       - Admin
-*     requestBody:
-*          required: true
-*          content: 
-*              application/json:
-*                  schema:
-*                      type: object
-*                      properties:
-*                          username:
-*                              type: string
-*                          password:
-*                              type: string
-*                          email:
-*                              type: string
-*                          phoneNumber:
-*                              type: Number
-*                      required:
-*                          - username
-*                          - password
-*                          - email
-*                          - phoneNumber
-*     responses:
-*       201:
-*         description: Host registered successfully
-*       400:
-*         description: Bad Request - Invalid request payload
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-* 
-* definitions:
-*   HostRegistration:
-*     type: object
-*     properties:
-*       username:
-*         type: string
-*         description: Host's username
-*         example: john_doe
-*       password:
-*         type: string
-*         description: Host's password
-*         example: my_secure_password
-*       email:
-*         type: string
-*         description: Host's email
-*         example: john@example33.com
-*       phoneNumber:
-*         type: number
-*         description: Host's phone number
-*         example: 1234567890
-*/
-
-
-
-/**
-* @swagger
-* /host/{hostId}:
-*   get:
-*     security:
-*       - Authorization: []
-*     summary: Get welcome message for a host
-*     description: Retrieve a welcome message for a specific host
-*     tags: 
-*       - Host
-*     parameters:
-*       - in: path
-*         name: hostId
-*         description: ID of the host
-*         required: true
-*         schema:
-*           type: string
-*     responses:
-*       200:
-*         description: Successful operation
-*         content:
-*           application/json:
-*             schema:
-*               type: object
-*               properties:
-*                 message:
-*                   type: string
-*                   description: Welcome message
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-* 
-* /host/{hostId}/visitors:
-*   get:
-*     security:
-*       - Authorization: []
-*     summary: Get visitors for a host
-*     description: Retrieve visitors registered under a specific host
-*     tags: 
-*       - Host
-*     parameters:
-*       - in: path
-*         name: hostId
-*         description: ID of the host
-*         required: true
-*         schema:
-*           type: string
-*     responses:
-*       200:
-*         description: Successful operation
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: '#/components/schemas/Visitor'
-*       401:
-*         description: Unauthorized - Invalid or missing token
-*       403:
-*         description: Forbidden - Insufficient permissions
-*       500:
-*         description: Internal Server Error
-*/
-
-
-
 
 
 /**
@@ -455,3 +322,6 @@ app.get('/admin/visits',async(req,res)=>{
  *                 phoneNumber: 1234567890
  *                 visitTime: '2023-01-01T12:00:00Z'
  */
+
+
+
